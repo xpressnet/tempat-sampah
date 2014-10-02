@@ -25,6 +25,7 @@ if ($X[1] =~ m/^https?\:\/\/.*youtube.*(ptracking|stream_204|player_204|gen_204)
         @ids = m/[&?]id\=([^\&\s]*)/;
         @mime = m/[&?](mime\=[^\&\s]*)/;
         @cpn = m/[&?]cpn\=([^\&\s]*)/;
+        @range = m/[&?](range=[^\&\s]*)/;
         if (defined($cpn[0])) {
             $fn = "/var/log/squid3/@cpn";
             if (-e $fn) {
@@ -32,16 +33,13 @@ if ($X[1] =~ m/^https?\:\/\/.*youtube.*(ptracking|stream_204|player_204|gen_204)
                 $id  = <FH>;
                 chomp $id ;
                 close FH ;
-        	  } else {
+                  } else {
                 $id = $ids[0] ;
             }
+        print $X[0] . " OK store-id=http://googlevideo.squid.internal/id=" . $id . "&@itag@range@mime\n" ;
         } else {
-          $id = $ids[0] ;
+        print "ERR\n" ;
         }
-        @range = m/[&?](range=[^\&\s]*)/;
-	print $X[0] . " OK store-id=http://googlevideo.squid.internal/id=" . $id . "&@itag@range@mime\n" ;
-
-
 
 } elsif ($X[1] =~ m/^http:\/\/(videos|photos|scontent)[\-a-z0-9\.]*instagram\.com\/hphotos[\-a-z0-9]*\/([\w\d\-\_\/\.]*.(mp4|jpg))/){
 	print $X[0] . " OK store-id=http://instagram.squid.internal/$2\n" ;
