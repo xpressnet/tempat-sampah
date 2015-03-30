@@ -1,0 +1,1 @@
+bye google code, terima  kasih telah menemani teman teman selama ini
